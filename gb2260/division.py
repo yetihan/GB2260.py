@@ -6,7 +6,7 @@ from .data import data
 from ._compat import unicode_compatible, unicode_type
 
 
-LATEST_YEAR = 2014
+LATEST_YEAR = 2016
 
 
 @unicode_compatible
@@ -119,10 +119,8 @@ class Division(object):
 def make_year_key(year):
     """A key generator for sorting years."""
     if year is None:
-        return (LATEST_YEAR, 12)
+        return (LATEST_YEAR, 7)
     year = str(year)
-    if len(year) == 4:
-        return (int(year), 12)
     if len(year) == 6:
         return (int(year[:4]), int(year[4:]))
     raise ValueError('invalid year %s' % year)

@@ -47,9 +47,10 @@ def main():
                 source, revision, code, name = line.strip().split()
                 current_dict[int(code)] = ensure_unicode(name)
 
-    # copy lasted data ,key is None;
-    last_date = max(data.keys())
-    data[None] = data[last_date]
+    # change key of  latest data,from yyyymm to None
+    latest_date = max(data.keys())
+
+    data[None] = data.pop(latest_date)
 
     result = 'data = {0}'.format(repr(data))
     with open(destination, 'w') as destination_file:

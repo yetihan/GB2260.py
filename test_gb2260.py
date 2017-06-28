@@ -32,8 +32,8 @@ def test_division(code, stack_name, is_province, is_prefecture, is_county):
      "gb2260.get(u'110100')", u'<GB2260 110100 北京市/市辖区>'),
     ('110000', None,
      "gb2260.get(u'110000')", u'<GB2260 110000 北京市>'),
-    ('110000', 2006,
-     "gb2260.get(u'110000', 2006)", u'<GB2260-2006 110000 北京市>'),
+    ('110000', 200612,
+     "gb2260.get(u'110000', 200612)", u'<GB2260-200612 110000 北京市>'),
 ])
 def test_representation_python2(code, year, repr_result, unicode_result):
     division = get(code, year)
@@ -53,8 +53,8 @@ def test_representation_python2(code, year, repr_result, unicode_result):
      u"gb2260.get('110100')", u'<GB2260 110100 北京市/市辖区>'),
     ('110000', None,
      u"gb2260.get('110000')", u'<GB2260 110000 北京市>'),
-    ('110000', 2006,
-     u"gb2260.get('110000', 2006)", u'<GB2260-2006 110000 北京市>'),
+    ('110000', 200612,
+     u"gb2260.get('110000', 200612)", u'<GB2260-200612 110000 北京市>'),
 ])
 def test_representation_python3(code, year, repr_result, unicode_result):
     division = get(code, year)
@@ -67,7 +67,7 @@ def test_representation_python3(code, year, repr_result, unicode_result):
 def test_comparable():
     assert get(110101) == Division(110101, u'东城区')
     assert get(110101) != Division(110000, u'北京市')
-    assert get(110101, year=2006) != Division(110101, u'东城区')
+    assert get(110101, year=200612) != Division(110101, u'东城区')
 
 
 def test_hashable():
@@ -75,29 +75,30 @@ def test_hashable():
         Division(110101, u'东城区'),
         Division(110000, u'北京市'),
         Division(110101, u'东城区'),
-        Division(110101, u'东城区', 2006),
+        Division(110101, u'东城区', 200612),
     ])
+
     assert division_set == set([
         Division(110101, u'东城区'),
         Division(110000, u'北京市'),
-        Division(110101, u'东城区', 2006),
+        Division(110101, u'东城区', 200612),
     ])
 
 
 def test_history_data():
-    get(522401, year=2010) == Division(522401, u'毕节市', 2010)
+    get(522401, year=201010) == Division(522401, u'毕节市', 201010)
 
     with raises(ValueError) as error:
         get(522401)
     assert error.value.args[0] == '522401 is not valid division code'
 
     with raises(ValueError) as error:
-        get(110101, 2000)
+        get(110101, 200010)
     assert error.value.args[0].startswith('year must be in')
 
 
 @mark.parametrize('code,name,year', [
-    (522401, u'毕节市', 2010),
+    (522401, u'毕节市', 201010),
     (419000, u'省直辖县级行政区划', None),
 ])
 def test_searching(code, name, year):
@@ -107,11 +108,11 @@ def test_searching(code, name, year):
 
 
 @mark.parametrize('year,result', [
-    (2013, (2013, 12)),
     (201304, (2013, 4)),
+    (2013, (2013, 12)),
     ('2013', (2013, 12)),
     ('201304', (2013, 4)),
-    (None, (2014, 12)),
+    (None, (2016, 7)),
 ])
 def test_make_year_key(year, result):
     assert make_year_key(year) == result

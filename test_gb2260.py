@@ -53,8 +53,8 @@ def test_representation_python2(code, year, repr_result, unicode_result):
      u"gb2260.get('110100')", u'<GB2260 110100 北京市/市辖区>'),
     ('110000', None,
      u"gb2260.get('110000')", u'<GB2260 110000 北京市>'),
-    ('110000', 2006,
-     u"gb2260.get('110000', 2006)", u'<GB2260-2006 110000 北京市>'),
+    ('110000', 200612,
+     u"gb2260.get('110000', 200612)", u'<GB2260-200612 110000 北京市>'),
 ])
 def test_representation_python3(code, year, repr_result, unicode_result):
     division = get(code, year)

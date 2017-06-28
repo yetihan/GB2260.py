@@ -18,7 +18,7 @@ test-all: gb2260/data.py
 clean:
 	rm -rf dist build gb2260/data.py
 
-gb2260/data.py: data/GB2260*.txt
+gb2260/data.py: data/stats/*.tsv
 	$(PYTHON) generate.py $? $@
 
 data/GB2260*.txt:

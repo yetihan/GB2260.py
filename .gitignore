@@ -10,3 +10,4 @@ __pycache__
 /dist
 /htmlcov
 /gb2260/data.py
+/.idea

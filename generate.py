@@ -11,11 +11,15 @@ import sys
 
 
 def get_name_suffix(path):
-    path, _ = os.path.splitext(path)
-    splited = path.rsplit('-', 1)
-    if len(splited) == 2:
-        return splited[-1]
-    return ''
+    return os.path.basename(path).split('.')[-2]
+
+
+# def get_name_suffix(path):
+#     path, _ = os.path.splitext(path)
+#     splited = path.rsplit('-', 1)
+#     if len(splited) == 2:
+#         return splited[-1]
+#     return ''
 
 
 def ensure_unicode(text):
@@ -35,12 +39,17 @@ def main():
     data = {}
     for current_source in source:
         suffix = get_name_suffix(current_source)
-        current_dict = data.setdefault(int(suffix) if suffix else None, {})
+        current_dict = data.setdefault(int(suffix), {})
 
         with open(current_source, 'r') as source_file:
+            _ = source_file.readline()  # omit 1st line
             for line in source_file:
-                code, name = line.strip().split()
+                source, revision, code, name = line.strip().split()
                 current_dict[int(code)] = ensure_unicode(name)
+
+    # copy lasted data ,key is None;
+    last_date = max(data.keys())
+    data[None] = data[last_date]
 
     result = 'data = {0}'.format(repr(data))
     with open(destination, 'w') as destination_file:
@@ -49,7 +58,6 @@ def main():
     for current_dict in data.values():
         message = '{0} records has been generated.'.format(len(current_dict))
         print(message, file=sys.stderr)
-
 
 if __name__ == '__main__':
     main()
